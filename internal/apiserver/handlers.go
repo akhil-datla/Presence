@@ -191,11 +191,19 @@ func CheckOut(c echo.Context) error {
 	return c.String(http.StatusOK, "Checked Out")
 }
 
-
 func ClearAttendance(c echo.Context) error {
 	err := attendance.ClearAttendance(c.FormValue("sesID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 	return c.String(http.StatusOK, "Cleared Attendance Records")
+}
+
+func GenerateCSV(c echo.Context) error {
+	fileName, err := attendance.GenerateCSV(c.FormValue("sesID"))
+	if err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+
+	return c.File(fileName)
 }

@@ -39,6 +39,7 @@ func InitRoutes() {
 	}
 
 	e.Use(middleware.CORSWithConfig(DefaultCORSConfig))
+	e.Static("/", "./frontend")
 	e.POST("/organizer/add", AddOrganizer)
 	e.POST("/organizer/view", ViewOrganizer)
 	e.POST("/organizer/login", AuthenticateOrganizer)
@@ -58,6 +59,7 @@ func InitRoutes() {
 	e.POST("/attendance/in", CheckIn)
 	e.POST("/attendance/out", CheckOut)
 	e.POST("/attendance/clear", ClearAttendance)
+	e.GET("/session/csv", GenerateCSV)
 }
 
 //Close the server
