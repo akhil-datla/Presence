@@ -83,7 +83,7 @@ func GetAttendance(sessionID string) ([]*Attendance, error) {
 }
 
 // FilterAttendance gets the Attendance Records for
-// a given sessionID, time in IEEE 8601 format as a string, and the mode either as "before" or "after"
+// a given sessionID, time in RFC3339 format as a string, and the mode either as "before" or "after"
 func FilterAttendance(sessionID, timeIn, mode string) ([]*Attendance, error) {
 	var attendanceList []*Attendance
 	var filteredAttendanceList []*Attendance

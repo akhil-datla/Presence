@@ -205,5 +205,5 @@ func GenerateCSV(c echo.Context) error {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.Attachment(fileName)
+	return c.Attachment(fileName, "attendance.csv")
 }
