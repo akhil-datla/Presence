@@ -1,6 +1,6 @@
 # Presence Backend Server
 
-Download and run the binary from the [release page](https://github.com/Team3256/RoboticsPresence/releases).
+Download and run the binary from the [release page](https://github.com/akhil-datla/Presence/releases).
 
 **OR**
 
