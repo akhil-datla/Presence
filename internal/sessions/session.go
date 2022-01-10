@@ -8,9 +8,9 @@ import (
 
 //Session defines the fields a session has
 type Session struct {
-	ID string `json:"sessionID" storm:"id"`
-	OrganizerID string `json:"organizerID" storm:"index"` 
-	Name string `json:"sessionName"` 
+	ID          string `json:"sessionID" storm:"id"`
+	OrganizerID string `json:"organizerID" storm:"index"`
+	Name        string `json:"sessionName"`
 }
 
 //New creates a new bucket for Session and creates a pointer to Sessions
@@ -19,14 +19,15 @@ func New() {
 }
 
 //AddSession adds a Session to the database given session information
-func AddSession(orgID, name string) error {
+func AddSession(orgID, name string) (string, error) {
+	id := uuid.New()
 	session := &Session{}
 	session.OrganizerID = orgID
 	session.Name = name
 	var err error
-	session.ID = uuid.New()
+	session.ID = id
 	err = dbmanager.Save(session)
-	return err
+	return id, err
 }
 
 //RemoveSession removes a Session

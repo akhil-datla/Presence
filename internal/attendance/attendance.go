@@ -133,7 +133,7 @@ func GenerateCSV(sessionID string) (string, error) {
 	var attendanceList []*Attendance
 	dbmanager.GroupQuery("SessionID", sessionID, &attendanceList)
 
-	csvName := fmt.Sprintf("./%s-%s.csv", session.Name, time.Now().Format("2006-01-02:15:04:05"))
+	csvName := fmt.Sprintf("%s.csv", time.Now().Format("2006-01-02:15:04:05"))
 
 	csvFile, err := os.Create(csvName)
 

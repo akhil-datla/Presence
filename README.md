@@ -1,4 +1,8 @@
-# Presence
+# Presence Backend Server
+
+Download and run the binary from the [release page](https://github.com/Team3256/RoboticsPresence/releases).
+
+**OR**
 
 To run Presence, type the following into a Terminal or Command Prompt window:
 ```

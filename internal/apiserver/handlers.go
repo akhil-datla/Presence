@@ -122,11 +122,11 @@ func DeleteParticipant(c echo.Context) error {
 }
 
 func CreateSession(c echo.Context) error {
-	err := sessions.AddSession(c.FormValue("orgID"), c.FormValue("name"))
+	id, err := sessions.AddSession(c.FormValue("orgID"), c.FormValue("name"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	return c.String(http.StatusOK, "Created Session")
+	return c.String(http.StatusOK, id)
 }
 
 func GetSessions(c echo.Context) error {
@@ -146,7 +146,7 @@ func UpdateSession(c echo.Context) error {
 }
 
 func DeleteSession(c echo.Context) error {
-	err := sessions.RemoveSession(c.FormValue("orgID"))
+	err := sessions.RemoveSession(c.FormValue("sesID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -205,5 +205,5 @@ func GenerateCSV(c echo.Context) error {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.File(fileName)
+	return c.Attachment(fileName)
 }
