@@ -3,7 +3,7 @@ package attendance
 import (
 	"encoding/csv"
 	"fmt"
-	"main/internal/participants"
+	"main/internal/users"
 	"main/internal/platform/dbmanager"
 	"main/internal/platform/uuid"
 	"main/internal/sessions"
@@ -31,7 +31,7 @@ func CheckIn(sessionID string, participantID string) error {
 	attendance := &Attendance{}
 	attendance.SessionID = sessionID
 	attendance.ParticipantID = participantID
-	var participant participants.Participant
+	var participant users.User
 	err := dbmanager.Query("ID", participantID, &participant)
 
 	if err != nil {

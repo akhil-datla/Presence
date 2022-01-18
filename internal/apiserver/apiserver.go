@@ -2,8 +2,7 @@ package apiserver
 
 import (
 	"main/internal/attendance"
-	"main/internal/organizers"
-	"main/internal/participants"
+	"main/internal/users"
 	"main/internal/sessions"
 	"net/http"
 
@@ -18,8 +17,7 @@ var e *echo.Echo
 func Start(portNum string) {
 	e = echo.New()
 	e.HideBanner = true
-	organizers.New()
-	participants.New()
+	users.New()
 	sessions.New()
 	attendance.New()
 	InitRoutes()
@@ -44,16 +42,11 @@ func InitRoutes() {
 		return c.String(http.StatusOK, "Hello!")
 	})
 
-	e.POST("/organizer/add", AddOrganizer)
-	e.POST("/organizer/view", ViewOrganizer)
-	e.POST("/organizer/login", AuthenticateOrganizer)
-	e.POST("/organizer/update", UpdateOrganizer)
-	e.POST("/organizer/delete", DeleteOrganizer)
-	e.POST("/participant/add", AddParticipant)
-	e.POST("/participant/view", ViewParticipant)
-	e.POST("/participant/login", AuthenticateParticipant)
-	e.POST("/particpant/update", UpdateParticipant)
-	e.POST("/participant/delete", DeleteParticipant)
+	e.POST("/user/create", CreateUser)
+	e.POST("/user/login", AuthenticateUser)
+	e.POST("/user/info", GetUser)
+	e.POST("/user/update", UpdateUser)
+	e.POST("/user/delete", DeleteUser)
 	e.POST("/session/create", CreateSession)
 	e.POST("/session/view", GetSessions)
 	e.POST("/session/update", UpdateSession)

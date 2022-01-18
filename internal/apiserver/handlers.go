@@ -2,135 +2,66 @@ package apiserver
 
 import (
 	"main/internal/attendance"
-	"main/internal/organizers"
-	"main/internal/participants"
+	"main/internal/users"
 	"main/internal/sessions"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-//AddOrganizer adds an organizer to the database
-func AddOrganizer(c echo.Context) error {
-
-	orgID, err2 := organizers.AddOrganizer(c.FormValue("firstName"), c.FormValue("lastName"), c.FormValue("email"), c.FormValue("password"))
-	if err2 != nil {
-		return err2
+func CreateUser(c echo.Context) error {
+	ID, err := users.AddUser(c.FormValue("firstName"), c.FormValue("lastName"), c.FormValue("email"), c.FormValue("password"))
+	if err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
 	}
-
-	return c.String(http.StatusOK, orgID)
+	return c.String(http.StatusOK, ID)
 }
 
-//ViewOrganizer returns the Organizer information
-func ViewOrganizer(c echo.Context) error {
+func AuthenticateUser(c echo.Context) error {
+	ID, err := users.AuthenticateUser(c.FormValue("email"), c.FormValue("password"))
+	if err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+	return c.String(http.StatusOK, ID)
+}
 
-	org, err := organizers.GetOrganizer(c.FormValue("id"))
-
+func GetUser(c echo.Context) error {
+	user, err := users.GetUser(c.FormValue("ID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, org)
+	user.Password = ""
+
+	return c.JSON(http.StatusOK, user)
 }
 
-//AuthenticateOrganizer logs in an Organizer
-func AuthenticateOrganizer(c echo.Context) error {
-	id, err := organizers.AuthenticateOrganizer(c.FormValue("email"), c.FormValue("password"))
-	if err != nil {
-		return c.String(http.StatusBadRequest, "Error getting organizer information")
-	}
-	if id != "" {
-		return c.String(http.StatusOK, id)
-	}
-	return c.String(http.StatusOK, "Invalid username and/or password")
-}
-
-//UpdateOrganizer updates an Organizer's information
-func UpdateOrganizer(c echo.Context) error {
-
-	err := organizers.UpdateOrganizer(c.FormValue("id"), c.FormValue("email"), c.FormValue("password"), c.FormValue("firstName"), c.FormValue("lastName"))
+func UpdateUser(c echo.Context) error {
+	err := users.UpdateUser(c.FormValue("ID"), c.FormValue("email"), c.FormValue("password"), c.FormValue("firstName"), c.FormValue("lastName"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	return c.String(http.StatusOK, "Updated Organizer")
+	return c.String(http.StatusOK, "Updated User")
 }
 
-//DeleteOrganizer deletes an Organizer
-func DeleteOrganizer(c echo.Context) error {
-
-	err := organizers.RemoveOrganizer(c.FormValue("id"))
+func DeleteUser(c echo.Context) error {
+	err := users.RemoveUser(c.FormValue("ID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-
-	return c.String(http.StatusOK, "Deleted Organizer")
-}
-
-//AddParticipant adds an participant to the database
-func AddParticipant(c echo.Context) error {
-
-	parID, err2 := participants.AddParticipant(c.FormValue("firstName"), c.FormValue("lastName"), c.FormValue("email"), c.FormValue("password"))
-	if err2 != nil {
-		return err2
-	}
-	return c.String(http.StatusOK, parID)
-}
-
-//ViewParticipant returns the Participant information
-func ViewParticipant(c echo.Context) error {
-
-	par, err := participants.GetParticipant(c.FormValue("id"))
-
-	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, par)
-}
-
-//AuthenticateParticipant logs in a Participant
-func AuthenticateParticipant(c echo.Context) error {
-	id, err := participants.AuthenticateParticipant(c.FormValue("email"), c.FormValue("password"))
-	if err != nil {
-		return c.String(http.StatusBadRequest, "Error getting participant information")
-	}
-	if id != "" {
-		return c.String(http.StatusOK, id)
-	}
-	return c.String(http.StatusOK, "Invalid username and/or password")
-}
-
-//UpdateParticipant updates a Participant's information
-func UpdateParticipant(c echo.Context) error {
-
-	err := participants.UpdateParticipant(c.FormValue("id"), c.FormValue("email"), c.FormValue("password"), c.FormValue("firstName"), c.FormValue("lastName"))
-	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
-	}
-	return c.String(http.StatusOK, "Updated Participant")
-}
-
-//DeleteParticipant deletes a Participant
-func DeleteParticipant(c echo.Context) error {
-
-	err := participants.RemoveParticipant(c.FormValue("id"))
-	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
-	}
-
-	return c.String(http.StatusOK, "Deleted Participant")
+	return c.String(http.StatusOK, "Deleted User")
 }
 
 func CreateSession(c echo.Context) error {
-	id, err := sessions.AddSession(c.FormValue("orgID"), c.FormValue("name"))
+	ID, err := sessions.AddSession(c.FormValue("ID"), c.FormValue("name"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	return c.String(http.StatusOK, id)
+	return c.String(http.StatusOK, ID)
 }
 
 func GetSessions(c echo.Context) error {
-	ses, err := sessions.GetSessions(c.FormValue("orgID"))
+	ses, err := sessions.GetSessions(c.FormValue("ID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -138,7 +69,7 @@ func GetSessions(c echo.Context) error {
 }
 
 func UpdateSession(c echo.Context) error {
-	err := sessions.UpdateSession(c.FormValue("id"), c.FormValue("orgID"), c.FormValue("name"))
+	err := sessions.UpdateSession(c.FormValue("sesID"), c.FormValue("ID"), c.FormValue("name"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -176,7 +107,7 @@ func FilterAttendance(c echo.Context) error {
 }
 
 func CheckIn(c echo.Context) error {
-	err := attendance.CheckIn(c.FormValue("sesID"), c.FormValue("parID"))
+	err := attendance.CheckIn(c.FormValue("sesID"), c.FormValue("ID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -184,7 +115,7 @@ func CheckIn(c echo.Context) error {
 }
 
 func CheckOut(c echo.Context) error {
-	err := attendance.CheckOut(c.FormValue("sesID"), c.FormValue("parID"))
+	err := attendance.CheckOut(c.FormValue("sesID"), c.FormValue("ID"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
