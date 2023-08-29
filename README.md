@@ -13,5 +13,5 @@ To specify a port to run on, add the port flag to the command:
 go run main.go -port=<PORT>
 ```
 
-[API Routes](https://github.com/akhil-datla/Presence/internal/apiserver/apiserver.go)\
-[API Handlers](https://github.com/akhil-datla/Presence/internal/apiserver/handlers.go)
+[API Routes](https://github.com/akhil-datla/Presence/blob/main/internal/apiserver/apiserver.go)\
+[API Handlers](https://github.com/akhil-datla/Presence/blob/main/internal/apiserver/handlers.go)
