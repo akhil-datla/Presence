@@ -14,6 +14,6 @@ require (
 	github.com/pterm/pterm v0.12.33
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	go.etcd.io/bbolt v1.3.5 // indirect
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
+	golang.org/x/crypto v0.1.0
 	google.golang.org/appengine v1.6.7 // indirect
 )
