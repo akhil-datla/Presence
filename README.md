@@ -1,9 +1,5 @@
 # Presence Backend Server
 
-Download and run the binary from the [release page](https://github.com/akhil-datla/Presence/releases).
-
-**OR**
-
 To run Presence, type the following into a Terminal or Command Prompt window:
 ```
 go run main.go
