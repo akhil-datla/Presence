@@ -447,7 +447,9 @@ func TestAttendanceFlow(t *testing.T) {
 		t.Fatalf("failed to create session: %d %s", rec.Code, rec.Body.String())
 	}
 	var sessResp map[string]interface{}
-	json.Unmarshal(rec.Body.Bytes(), &sessResp)
+	if err := json.Unmarshal(rec.Body.Bytes(), &sessResp); err != nil {
+		t.Fatalf("failed to unmarshal session response: %v", err)
+	}
 	sessionID := sessResp["data"].(map[string]interface{})["id"].(string)
 
 	t.Run("check in", func(t *testing.T) {
@@ -571,7 +573,9 @@ func TestAttendanceFilterEndpoint(t *testing.T) {
 	// Create session and check in
 	rec := env.request("POST", "/api/v1/sessions", `{"name":"Filter Test"}`, token)
 	var sessResp map[string]interface{}
-	json.Unmarshal(rec.Body.Bytes(), &sessResp)
+	if err := json.Unmarshal(rec.Body.Bytes(), &sessResp); err != nil {
+		t.Fatalf("failed to unmarshal session response: %v", err)
+	}
 	sessionID := sessResp["data"].(map[string]interface{})["id"].(string)
 
 	env.request("POST", "/api/v1/sessions/"+sessionID+"/checkin", "", token)
