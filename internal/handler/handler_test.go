@@ -270,7 +270,9 @@ func TestUpdateProfile(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["first_name"] != "Janet" {
 			t.Fatalf("expected first_name=Janet, got %v", data["first_name"])
@@ -320,7 +322,9 @@ func TestSessionCRUD(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		sessionID = data["id"].(string)
 		if data["name"] != "Morning Standup" {
@@ -343,7 +347,9 @@ func TestSessionCRUD(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].([]interface{})
 		if len(data) != 1 {
 			t.Fatalf("expected 1 session, got %d", len(data))
@@ -357,7 +363,9 @@ func TestSessionCRUD(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["name"] != "Morning Standup" {
 			t.Fatalf("expected name=Morning Standup, got %v", data["name"])
@@ -379,7 +387,9 @@ func TestSessionCRUD(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["name"] != "Afternoon Standup" {
 			t.Fatalf("expected name=Afternoon Standup, got %v", data["name"])
@@ -447,7 +457,9 @@ func TestAttendanceFlow(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["participant_name"] != "Alice Wonder" {
 			t.Fatalf("expected participant_name=Alice Wonder, got %v", data["participant_name"])
@@ -464,7 +476,9 @@ func TestAttendanceFlow(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["time_out"] == nil || data["time_out"] == "" {
 			t.Fatal("expected time_out to be set after check-out")
@@ -478,7 +492,9 @@ func TestAttendanceFlow(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].([]interface{})
 		if len(data) != 1 {
 			t.Fatalf("expected 1 attendance record, got %d", len(data))
@@ -514,7 +530,9 @@ func TestAttendanceFlow(t *testing.T) {
 		// Verify cleared
 		rec = env.request("GET", "/api/v1/sessions/"+sessionID+"/attendance", "", token)
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].([]interface{})
 		if len(data) != 0 {
 			t.Fatalf("expected 0 records after clear, got %d", len(data))
@@ -579,7 +597,9 @@ func TestAttendanceFilterEndpoint(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].([]interface{})
 		if len(data) != 1 {
 			t.Fatalf("expected 1 record, got %d", len(data))
@@ -593,7 +613,9 @@ func TestAttendanceFilterEndpoint(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		// data could be null (nil slice) or empty array
 		if resp["data"] != nil {
 			data, ok := resp["data"].([]interface{})
