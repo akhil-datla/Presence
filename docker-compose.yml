@@ -1,0 +1,12 @@
+services:
+  presence:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - presence-data:/data
+    environment:
+      DATABASE_PATH: /data/presence.db
+
+volumes:
+  presence-data:

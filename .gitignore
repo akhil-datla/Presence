@@ -1,0 +1,36 @@
+# Binaries
+presence
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Database files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+coverage.out
+coverage.html
+
+# Build
+dist/
+bin/
