@@ -44,7 +44,7 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to open database: ", err)
 	}
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 
 	// Server
 	srv := server.New(cfg, db, staticFiles)

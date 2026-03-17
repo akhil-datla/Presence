@@ -36,8 +36,17 @@ func New(cfg *config.Config, s *store.Store, staticFiles embed.FS) *Server {
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions},
 		AllowHeaders: []string{echo.HeaderAuthorization, echo.HeaderContentType},
 	}))
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "${time_rfc3339} ${method} ${uri} ${status} ${latency_human}\n",
+	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		LogValuesFunc: func(c echo.Context, values middleware.RequestLoggerValues) error {
+			c.Logger().Infof("%s %s %s %d %v",
+				values.StartTime.Format(time.RFC3339),
+				values.Method,
+				values.URI,
+				values.Status,
+				values.Latency,
+			)
+			return nil
+		},
 	}))
 
 	jwt := auth.NewJWTService(cfg.JWTSecret)

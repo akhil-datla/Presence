@@ -64,7 +64,7 @@ func (s *Store) GetAttendance(sessionID string) ([]model.Attendance, error) {
 	if err != nil {
 		return nil, fmt.Errorf("get attendance: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	return scanAttendanceRows(rows)
 }
@@ -87,7 +87,7 @@ func (s *Store) FilterAttendance(sessionID string, t time.Time, mode string) ([]
 	if err != nil {
 		return nil, fmt.Errorf("filter attendance: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	return scanAttendanceRows(rows)
 }

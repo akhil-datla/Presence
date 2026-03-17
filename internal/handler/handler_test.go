@@ -27,7 +27,7 @@ func newTestEnv(t *testing.T) *testEnv {
 	if err != nil {
 		t.Fatalf("failed to create test store: %v", err)
 	}
-	t.Cleanup(func() { s.Close() })
+	t.Cleanup(func() { _ = s.Close() })
 
 	jwtSvc := auth.NewJWTService(testSecret)
 	e := echo.New()
@@ -133,7 +133,9 @@ func TestRegister(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["token"] == nil || data["token"] == "" {
 			t.Fatal("expected token in response")
@@ -192,7 +194,9 @@ func TestLogin(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["token"] == nil || data["token"] == "" {
 			t.Fatal("expected token in response")
@@ -237,7 +241,9 @@ func TestGetProfile(t *testing.T) {
 		}
 
 		var resp map[string]interface{}
-		json.Unmarshal(rec.Body.Bytes(), &resp)
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to unmarshal response: %v", err)
+		}
 		data := resp["data"].(map[string]interface{})
 		if data["email"] != "jane@test.com" {
 			t.Fatalf("expected email=jane@test.com, got %v", data["email"])

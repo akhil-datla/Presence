@@ -47,7 +47,7 @@ func (s *Store) ListSessions(organizerID string) ([]model.Session, error) {
 	if err != nil {
 		return nil, fmt.Errorf("list sessions: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var sessions []model.Session
 	for rows.Next() {
